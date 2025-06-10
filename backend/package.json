@@ -1,12 +1,38 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.ts",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/server.ts",
+    "db:seed": "prisma db seed",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@fastify/swagger": "^9.5.1",
+    "@fastify/swagger-ui": "^5.2.3",
+    "@prisma/client": "^6.9.0",
+    "fastify": "^5.3.3",
+    "fastify-type-provider-zod": "^5.0.1",
+    "validations-br": "^1.4.0",
+    "zod": "^3.25.56"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "@types/node": "^22.15.30",
+    "eslint": "^9.28.0",
+    "globals": "^16.2.0",
+    "prettier": "^3.5.3",
+    "prisma": "^6.9.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.0"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
 }

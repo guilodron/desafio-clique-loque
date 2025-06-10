@@ -1,0 +1,6 @@
+POST http://localhost:3000/user/login HTTP/1.1
+content-type: application/json
+
+{
+    "cnpj": "10440091000130"
+}
