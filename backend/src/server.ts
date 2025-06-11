@@ -4,12 +4,15 @@ import { validatorCompiler, ZodTypeProvider, serializerCompiler, jsonSchemaTrans
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { contractRoutes } from './domain/Contract/contract.route.js';
+import cors from '@fastify/cors';
 
 const app = fastify({ logger: true }).withTypeProvider<ZodTypeProvider>();
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
-
+app.register(cors, {
+  origin: '*'
+});
 app.register(fastifySwagger, {
     openapi: {
         info: {
