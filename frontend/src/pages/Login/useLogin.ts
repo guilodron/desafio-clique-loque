@@ -23,7 +23,12 @@ export function useLogin () {
             }
             toast.error("Usuário não possui contratos")            
         }).catch((e) => {
-            toast.error(e.response.data.message)
+            if(e?.response?.data?.message) {
+                toast.error(e.response.data.message)
+            } else {
+                toast.error(e.message)
+            }
+            console.log(e)
 
         })
     }
