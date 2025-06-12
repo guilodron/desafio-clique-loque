@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { contractListSchema } from './contract.schemas.js';
-import { getUserContracts } from './contract.controller.js';
+import { getUserContracts, sendData } from './contract.controller.js';
 export const contractRoutes = (app: FastifyInstance) => {
     app.get('/:userId',
         {
@@ -9,5 +9,7 @@ export const contractRoutes = (app: FastifyInstance) => {
             }
         }
         , getUserContracts);
-
+    app.post('/sendData', {}, async (req, repply) => {
+        return sendData(req,repply);
+    });
 };

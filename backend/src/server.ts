@@ -5,9 +5,10 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { contractRoutes } from './domain/Contract/contract.route.js';
 import cors from '@fastify/cors';
+import fastifyMultipart from '@fastify/multipart';
 
-const app = fastify({ logger: true }).withTypeProvider<ZodTypeProvider>();
-
+const app = fastify().withTypeProvider<ZodTypeProvider>();
+app.register(fastifyMultipart);
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 app.register(cors, {
