@@ -7,7 +7,7 @@ import {Search} from 'lucide-react'
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import type { ContractsDTO } from '@/hooks/loggedContextDto';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 
@@ -82,7 +82,9 @@ export const Contract = () => {
             </TableBody>
           </Table>
           <div className='flex flex-row justify-end mt-4'>
-            <Button onClick={() => console.log(selectedContracts)} className='mr-3 p-5'>ANTERIOR</Button>
+            <Button onClick={() => console.log(selectedContracts)} className='mr-3 p-5'>
+              <Link to={'/'}>ANTERIOR</Link>
+            </Button>
             <Button onClick={handleNext} className='p-5'>PROXIMO</Button>
           </div>
         </CardContent>

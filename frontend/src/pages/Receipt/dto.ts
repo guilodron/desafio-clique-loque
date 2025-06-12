@@ -1,3 +1,4 @@
+import type { ContractsDTO } from "@/hooks/loggedContextDto";
 import { z } from "zod/v4";
 
 export const receiptSchema = z.object({
@@ -41,3 +42,7 @@ export const receiptSchema = z.object({
 
 
 export type ReceiptFormInput = z.infer<typeof receiptSchema>;
+
+export interface ReceiptLocationState {
+    contract: ContractsDTO;
+}

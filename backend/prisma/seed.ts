@@ -7,7 +7,7 @@ async function main() {
     for (let i = 0; i < 1; i++) {
         const user = await prismaClient.user.create({
             data: {
-                cnpj: faker.string.numeric({ length: 14 }),
+                cnpj: '10440091000130',
                 nomeFantasia: faker.company.name(),
                 razaoSocial: faker.company.name()
             }
