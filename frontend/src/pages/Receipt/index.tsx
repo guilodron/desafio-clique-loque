@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useLoggedContext } from '@/hooks/loggedContext'
 import Logo from '/logo.png'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import type { ContractsDTO } from '@/hooks/loggedContextDto';
-import { Form } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { type ReceiptFormInput, receiptSchema } from './dto';
@@ -13,6 +13,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useEffect, useState } from 'react';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { Input } from '@/components/ui/input';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 interface ReceiptLocationState {
     contract: ContractsDTO;
@@ -25,6 +27,7 @@ const Receipt = () => {
     const [isRetencaoImpostosActive, setIsRetencaoImpostosActive] = useState<CheckedState>(false);
     const [valorRetencaoTecnica, setValorRetencaoTecnica] = useState('');
     const { contract } = state
+    const navigate = useNavigate()
     const form = useForm<ReceiptFormInput>({
         resolver: zodResolver(receiptSchema),
         defaultValues: {
@@ -62,7 +65,31 @@ const Receipt = () => {
     }, [form.watch("valor"), form.watch("isRetencaoTecnica"), contract.retencaoTecnica, form]);
 
     const onSubmit: SubmitHandler<ReceiptFormInput> = (data) => {
-        console.log(data)
+        const formData = new FormData();
+
+        Object.entries(data).forEach(([key, value]) => {
+            if (key !== "files") {
+                formData.append(key, value as string);
+            }
+        });
+
+        const files = data.files as FileList;
+        if (files && files.length) {
+            Array.from(files).forEach(file => {
+                formData.append("files", file);
+            });
+        }
+        console.log(formData)
+        axios.post('http://localhost:3000/contracts/sendData', formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        })
+            .then((response) => {
+                toast.success(response.data)
+                navigate('/')
+            })
+            .catch(() => {
+                toast.error("Ocorreu um erro ao enviar o formulário")
+            });
     };
 
     return (
@@ -86,7 +113,7 @@ const Receipt = () => {
                         <span>{contract.titulo}</span>
                     </div>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
                             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4'>
                                 <CustomFormField
                                     form={form}
@@ -209,10 +236,25 @@ const Receipt = () => {
                             }
                             {/* TODO file managment */}
 
-                            <Input
-                                {...form.register('files')}
-                                type='file'
-                                multiple
+                            <FormField
+                                control={form.control}
+                                name='files'
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input
+                                                type='file'
+                                                name={field.name}
+                                                multiple
+                                                ref={field.ref}
+                                                accept='*'
+                                                onChange={event => {
+                                                    field.onChange(event.target.files);
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
                             />
                             <Button type='submit'>click</Button>
                         </form>
