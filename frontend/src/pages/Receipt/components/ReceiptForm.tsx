@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import type { UseFormReturn } from 'react-hook-form';
 import type { ReceiptFormInput } from '../dto';
 import type { CheckedState } from '@radix-ui/react-checkbox';
+import { Link } from 'react-router';
 
 
 type ReceiptFormProps = {
@@ -171,7 +172,10 @@ export const ReceiptForm = ({
                         </FormItem>
                     )}
                 />
-                <Button type='submit'>click</Button>
+                <div className='flex flex-row justify-end'>
+                    <Link to={'/contracts'}><Button type='button' className='mr-4'>ANTERIOR</Button></Link>
+                    <Button type='submit'>PRÓXIMO</Button>
+                </div>
             </form>
         </Form>
     )
